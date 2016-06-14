@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements UpdateTask.CustomCallback {
 
     RecyclerView rv;
     FilmListAdapter adapter;
@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        films.add(new FilmItem("dfgsdfg"));
+        films.add(new FilmItem("test"));
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -55,37 +55,11 @@ public class MainActivity extends AppCompatActivity {
         rv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         adapter = new FilmListAdapter(this,films);
         rv.setAdapter(adapter);
-        new NewThread().execute();
     }
-
-    public class NewThread extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected String doInBackground(String... params) {
-            try {
-                doc = Jsoup.connect("http://amovies.org/serials/").get();
-                elements = doc.getElementsByClass("film-name");
-                for (Element element : elements) {
-                    films.add(new FilmItem(element.text()));
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            // ничего не возвращаем потому что я так захотел)
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            adapter.notifyDataSetChanged();
-        }
-    }
-
 
 
     private void updateData() {
-
+        new UpdateTask(this).execute();
     }
 
     @Override
@@ -97,16 +71,18 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void doSomething(List<FilmItem> result) {
+        films.addAll(result);
+        adapter.notifyDataSetChanged();
     }
 }
