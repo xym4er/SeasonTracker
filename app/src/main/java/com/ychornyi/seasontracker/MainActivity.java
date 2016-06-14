@@ -1,15 +1,38 @@
 package com.ychornyi.seasontracker;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.ychornyi.seasontracker.model.FilmListAdapter;
+import com.ychornyi.seasontracker.model.items.FilmItem;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
+
+    RecyclerView rv;
+    FilmListAdapter adapter;
+    Element title;
+    List<FilmItem> films = new ArrayList<>();
+    Elements elements;
+    Document doc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,14 +41,51 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        films.add(new FilmItem("dfgsdfg"));
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                updateData();
             }
         });
+
+        rv = (RecyclerView)findViewById(R.id.rvMain);
+        rv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        adapter = new FilmListAdapter(this,films);
+        rv.setAdapter(adapter);
+        new NewThread().execute();
+    }
+
+    public class NewThread extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+                doc = Jsoup.connect("http://amovies.org/serials/").get();
+                elements = doc.getElementsByClass("film-name");
+                for (Element element : elements) {
+                    films.add(new FilmItem(element.text()));
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            // ничего не возвращаем потому что я так захотел)
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+
+
+    private void updateData() {
+
     }
 
     @Override

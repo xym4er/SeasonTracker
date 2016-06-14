@@ -1,5 +1,7 @@
 package com.ychornyi.seasontracker.model.items;
 
+import java.util.Date;
+
 public class FilmItem {
     private String title;
     private String lastUpdate;
@@ -7,6 +9,11 @@ public class FilmItem {
     public FilmItem(String title, String lastUpdate) {
         this.title = title;
         this.lastUpdate = lastUpdate;
+    }
+
+    public FilmItem(String title) {
+        this.title = title;
+        lastUpdate = "сегодня";
     }
 
     public FilmItem() {
