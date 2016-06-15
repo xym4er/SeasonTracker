@@ -6,3 +6,7 @@
 .DS_Store
 /build
 /captures
+/.gradle/
+.idea/runConfigurations.xml
+.idea/vcs.xml
+

@@ -1,13 +1,11 @@
 package com.ychornyi.seasontracker;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,24 +13,14 @@ import android.view.MenuItem;
 import com.ychornyi.seasontracker.model.FilmListAdapter;
 import com.ychornyi.seasontracker.model.items.FilmItem;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements UpdateTask.CustomCallback {
 
     RecyclerView rv;
     FilmListAdapter adapter;
-    Element title;
     List<FilmItem> films = new ArrayList<>();
-    Elements elements;
-    Document doc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,9 +39,9 @@ public class MainActivity extends AppCompatActivity implements UpdateTask.Custom
             }
         });
 
-        rv = (RecyclerView)findViewById(R.id.rvMain);
+        rv = (RecyclerView) findViewById(R.id.rvMain);
         rv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        adapter = new FilmListAdapter(this,films);
+        adapter = new FilmListAdapter(this, films);
         rv.setAdapter(adapter);
     }
 
