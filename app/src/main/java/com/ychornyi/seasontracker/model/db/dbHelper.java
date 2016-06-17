@@ -1,6 +1,8 @@
 package com.ychornyi.seasontracker.model.db;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -11,6 +13,7 @@ import com.ychornyi.seasontracker.model.items.SeriesItem;
  * Created by y.chornyi on 15.06.2016.
  */
 public class dbHelper extends SQLiteOpenHelper {
+    private Context context;
     public static final String DATABASE_NAME = "main.db";
     public static final int DATABASE_VERSION = 1;
 
@@ -23,6 +26,7 @@ public class dbHelper extends SQLiteOpenHelper {
 
     public dbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.context = context;
     }
 
     @Override
@@ -39,9 +43,19 @@ public class dbHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    public boolean mkNewTable (String tableName,SQLiteDatabase db){
+        db.execSQL("create table "+ tableName +" ("+
+                SERIALS_COLUMN_ID+" integer primary key autoincrement, "+
+                SERIALS_COLUMN_NAME+" text not null, "+
+                SERIALS_COLUMN_LAST_UPDATE+" text);");
+
+        return false;
+    }
+
     public boolean addSeries (SeriesItem series){
         boolean flag = false;
         SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
         Cursor cursor = null;
         String[] columns = null;
         columns = new String[]{ SERIALS_COLUMN_NAME };
@@ -58,10 +72,12 @@ public class dbHelper extends SQLiteOpenHelper {
         }
         if (flag){
 
-        }else{
 
+
+        }else{
+            mkNewTable(series.getName(),db);
         }
-        return !flag;
+        return flag;
 
     }
 }
