@@ -2,16 +2,13 @@ package com.ychornyi.seasontracker.model.db;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.ychornyi.seasontracker.Utils;
 import com.ychornyi.seasontracker.model.items.SeriesItem;
 
-/**
- * Created by y.chornyi on 15.06.2016.
- */
 public class dbHelper extends SQLiteOpenHelper {
     private Context context;
     public static final String DATABASE_NAME = "main.db";
@@ -20,8 +17,18 @@ public class dbHelper extends SQLiteOpenHelper {
     private static final String SERIALS_TABLE_NAME = "serials";
     private static final String SERIALS_COLUMN_ID = "_id";
     private static final String SERIALS_COLUMN_NAME = "name";
+    private static final String SERIALS_COLUMN_TABLE_NAME = "name";
     private static final String SERIALS_COLUMN_LAST_UPDATE = "last_update";
+    private static final String SERIALS_COLUMN_PICTURE = "last_update";
 
+    private static final String FILM_COLUMN_ID = "_id";
+    private static final String FILM_COLUMN_NAME = "name";
+    private static final String FILM_COLUMN_TRANSLATE = "translate";
+    private static final String FILM_COLUMN_SEASON = "season";
+    private static final String FILM_COLUMN_SERIA = "seria";
+    private static final String FILM_COLUMN_URL = "url";
+    private static final String FILM_COLUMN_DATE = "date";
+    private static final String FILM_COLUMN_FILMID = "filmid";
 
 
     public dbHelper(Context context) {
@@ -34,6 +41,8 @@ public class dbHelper extends SQLiteOpenHelper {
         db.execSQL("create table "+ SERIALS_TABLE_NAME +" ("+
         SERIALS_COLUMN_ID+" integer primary key autoincrement, "+
         SERIALS_COLUMN_NAME+" text not null, "+
+        SERIALS_COLUMN_TABLE_NAME+" text, "+
+        SERIALS_COLUMN_PICTURE+" text, "+
         SERIALS_COLUMN_LAST_UPDATE+" text);");
     }
 
@@ -45,17 +54,31 @@ public class dbHelper extends SQLiteOpenHelper {
 
     public boolean mkNewTable (String tableName,SQLiteDatabase db){
         db.execSQL("create table "+ tableName +" ("+
-                SERIALS_COLUMN_ID+" integer primary key autoincrement, "+
-                SERIALS_COLUMN_NAME+" text not null, "+
-                SERIALS_COLUMN_LAST_UPDATE+" text);");
+                FILM_COLUMN_ID+" integer primary key autoincrement, "+
+                FILM_COLUMN_NAME+" text not null, "+
+                FILM_COLUMN_TRANSLATE+" text, "+
+                FILM_COLUMN_SEASON+" text, "+
+                FILM_COLUMN_SERIA+" text, "+
+                FILM_COLUMN_URL+" text, "+
+                FILM_COLUMN_DATE+" text, "+
+                FILM_COLUMN_FILMID+" text);");
 
         return false;
+    }
+
+    private ContentValues mkValues (SeriesItem series){
+        ContentValues result = new ContentValues();
+        result.put(FILM_COLUMN_NAME,series.getName());
+        result.put(FILM_COLUMN_TRANSLATE,series.get);
+        result.put(FILM_COLUMN_NAME,series.getName());
+
+        return result;
     }
 
     public boolean addSeries (SeriesItem series){
         boolean flag = false;
         SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues cv = new ContentValues();
+
         Cursor cursor = null;
         String[] columns = null;
         columns = new String[]{ SERIALS_COLUMN_NAME };
@@ -71,11 +94,10 @@ public class dbHelper extends SQLiteOpenHelper {
             }
         }
         if (flag){
-
-
+            db.insert(Utils.encode(series.getName()),);
 
         }else{
-            mkNewTable(series.getName(),db);
+            mkNewTable(Utils.encode(series.getName()),db);
         }
         return flag;
 
