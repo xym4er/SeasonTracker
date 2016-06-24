@@ -8,7 +8,25 @@ public class SeriesItem {
     private String name;
     private int season;
     private int seria;
-    private int date;
+    private String date;
+    private String translate;
+    private String url;
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getTranslate() {
+        return translate;
+    }
+
+    public void setTranslate(String translate) {
+        this.translate = translate;
+    }
 
     public int getId() {
         return id;
@@ -42,20 +60,14 @@ public class SeriesItem {
         this.seria = seria;
     }
 
-    public int getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(int date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
-    public SeriesItem(int id, String name, int season, int seria, int date) {
-
-        this.id = id;
-        this.name = name;
-        this.season = season;
-        this.seria = seria;
-        this.date = date;
+    public SeriesItem() {
     }
 }

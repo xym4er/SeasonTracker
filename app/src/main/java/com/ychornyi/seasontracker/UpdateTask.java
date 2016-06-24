@@ -3,6 +3,7 @@ package com.ychornyi.seasontracker;
 import android.os.AsyncTask;
 
 import com.ychornyi.seasontracker.model.items.FilmItem;
+import com.ychornyi.seasontracker.model.items.SeriesItem;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -17,16 +18,16 @@ import java.util.List;
  * Created by Admin on 14.06.2016.
  */
 
-public class UpdateTask extends AsyncTask<Void,Void,List<FilmItem>> {
+public class UpdateTask extends AsyncTask<Void,Void,List<SeriesItem>> {
     private CustomCallback callback;
-    private List<FilmItem> films = new ArrayList<>();
+    private List<SeriesItem> films = new ArrayList<>();
 
     public UpdateTask(CustomCallback callback) {
         this.callback = callback;
     }
 
     @Override
-    protected List<FilmItem> doInBackground(Void... params) {
+    protected List<SeriesItem> doInBackground(Void... params) {
 //        try {
 //            Document doc = Jsoup.connect("http://amovies.org/serials/").get();
 //            Elements elements = doc.getElementsByClass("film-name");
@@ -53,9 +54,14 @@ public class UpdateTask extends AsyncTask<Void,Void,List<FilmItem>> {
 //                System.out.println(link.get(0).getElementsByClass("voice").get(0).text());
 //                System.out.println(link.get(0).getElementsByClass("season").get(0).getElementsByTag("span").get(1).text());
 //                System.out.println(link.get(0).getElementsByClass("series").get(0).getElementsByTag("span").get(1).text());
-
-                films.add(new FilmItem(link.get(0).getElementsByClass("film-name").get(0).text(),link.get(0).getElementsByClass("film-date-t").get(0).text()));
-//                films.add(new FilmItem(link.get(0).getElementsByClass("film-date-t").get(0).text()));
+                SeriesItem seriesItem = new SeriesItem();
+                seriesItem.setUrl(link.get(0).attr("href"));
+                seriesItem.setDate(link.get(0).getElementsByClass("film-date-t").get(0).text());
+                seriesItem.setName(link.get(0).getElementsByClass("film-name").get(0).text());
+                seriesItem.setTranslate(link.get(0).getElementsByClass("voice").get(0).text());
+                seriesItem.setSeason(Integer.parseInt(link.get(0).getElementsByClass("season").get(0).getElementsByTag("span").get(1).text()));
+                seriesItem.setSeria(Integer.parseInt(link.get(0).getElementsByClass("series").get(0).getElementsByTag("span").get(1).text()));
+                films.add(seriesItem);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -68,7 +74,7 @@ public class UpdateTask extends AsyncTask<Void,Void,List<FilmItem>> {
     }
 
     @Override
-    protected void onPostExecute(List<FilmItem> result) {
+    protected void onPostExecute(List<SeriesItem> result) {
         if (callback!=null){
             callback.doSomething(result);
         }
@@ -76,6 +82,6 @@ public class UpdateTask extends AsyncTask<Void,Void,List<FilmItem>> {
 
     public interface CustomCallback
     {
-        public void doSomething(List<FilmItem> someResult);
+        public void doSomething(List<SeriesItem> someResult);
     }
 }

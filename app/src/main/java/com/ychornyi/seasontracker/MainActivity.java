@@ -12,6 +12,7 @@ import android.view.MenuItem;
 
 import com.ychornyi.seasontracker.model.FilmListAdapter;
 import com.ychornyi.seasontracker.model.items.FilmItem;
+import com.ychornyi.seasontracker.model.items.SeriesItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,7 @@ public class MainActivity extends AppCompatActivity implements UpdateTask.Custom
 
     RecyclerView rv;
     FilmListAdapter adapter;
-    List<FilmItem> films = new ArrayList<>();
+    List<SeriesItem> films = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,8 +29,6 @@ public class MainActivity extends AppCompatActivity implements UpdateTask.Custom
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        films.add(new FilmItem("test"));
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -69,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements UpdateTask.Custom
     }
 
     @Override
-    public void doSomething(List<FilmItem> result) {
+    public void doSomething(List<SeriesItem> result) {
         films.addAll(result);
         adapter.notifyDataSetChanged();
     }
