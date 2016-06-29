@@ -65,6 +65,7 @@ public class SeriesItem {
     }
 
     public void setDate(String date) {
+
         this.date = date;
     }
 

@@ -18,7 +18,7 @@ import java.util.List;
  * Created by Admin on 14.06.2016.
  */
 
-public class UpdateTask extends AsyncTask<Void,Void,List<SeriesItem>> {
+public class UpdateTask extends AsyncTask<Void, Void, List<SeriesItem>> {
     private CustomCallback callback;
     private List<SeriesItem> films = new ArrayList<>();
 
@@ -68,20 +68,17 @@ public class UpdateTask extends AsyncTask<Void,Void,List<SeriesItem>> {
         }
 
 
-
-        // ничего не возвращаем потому что я так захотел)
         return films;
     }
 
     @Override
     protected void onPostExecute(List<SeriesItem> result) {
-        if (callback!=null){
+        if (callback != null) {
             callback.doSomething(result);
         }
     }
 
-    public interface CustomCallback
-    {
+    public interface CustomCallback {
         public void doSomething(List<SeriesItem> someResult);
     }
 }

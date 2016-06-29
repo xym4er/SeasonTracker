@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.ychornyi.seasontracker.model.FilmListAdapter;
+import com.ychornyi.seasontracker.model.db.dbHelper;
 import com.ychornyi.seasontracker.model.items.FilmItem;
 import com.ychornyi.seasontracker.model.items.SeriesItem;
 
@@ -18,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements UpdateTask.CustomCallback {
-
+    dbHelper db;
     RecyclerView rv;
     FilmListAdapter adapter;
     List<SeriesItem> films = new ArrayList<>();
@@ -29,6 +30,8 @@ public class MainActivity extends AppCompatActivity implements UpdateTask.Custom
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        db = new dbHelper(getApplicationContext());
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -71,5 +74,14 @@ public class MainActivity extends AppCompatActivity implements UpdateTask.Custom
     public void doSomething(List<SeriesItem> result) {
         films.addAll(result);
         adapter.notifyDataSetChanged();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i<=films.size()-1; i++) {
+                    db.addSeries(films.get(i));
+                }
+            }
+        }).start();
     }
 }

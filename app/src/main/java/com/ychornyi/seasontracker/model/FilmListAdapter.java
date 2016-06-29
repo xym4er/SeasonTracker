@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.ychornyi.seasontracker.R;
 import com.ychornyi.seasontracker.model.items.FilmItem;
+import com.ychornyi.seasontracker.model.items.SeriesItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,7 @@ import java.util.List;
  */
 public class FilmListAdapter extends RecyclerView.Adapter<FilmListAdapter.FilmViewHolder> {
 
-    private List<FilmItem> films = new ArrayList<>();
+    private List<SeriesItem> films = new ArrayList<>();
     private Context context;
 
     public FilmListAdapter(Context context, List films) {
@@ -35,8 +36,8 @@ public class FilmListAdapter extends RecyclerView.Adapter<FilmListAdapter.FilmVi
 
     @Override
     public void onBindViewHolder(FilmViewHolder holder, int position) {
-        holder.date.setText(films.get(position).getLastUpdate());
-        holder.title.setText(films.get(position).getTitle());
+        holder.date.setText(films.get(position).getDate());
+        holder.title.setText(films.get(position).getName());
     }
 
     @Override
