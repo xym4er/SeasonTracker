@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.ychornyi.seasontracker.model.items.SeriesItem;
 
 import org.jsoup.Jsoup;
@@ -12,13 +13,10 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-/**
- * Created by Admin on 14.06.2016.
- */
 
 public class UpdateTask extends AsyncTask<Void, Void, List<SeriesItem>> {
     private CustomCallback callback;
@@ -32,8 +30,24 @@ public class UpdateTask extends AsyncTask<Void, Void, List<SeriesItem>> {
 
     @Override
     protected List<SeriesItem> doInBackground(Void... params) {
-        File lastFilm = context.getFilesDir();
-        Log.d("MyTag", "doInBackground: "+lastFilm.toString());
+        File lastFilmDir = new File(context.getFilesDir()+"last.json");
+        Gson gson = new Gson();
+        String json;
+        if (!lastFilmDir.exists()){
+            FileOutputStream outputStream;
+            json = gson.toJson(new SeriesItem());
+            try {
+                outputStream = context.openFileOutput(lastFilmDir.toString(), Context.MODE_PRIVATE);
+                outputStream.write(json.getBytes());
+                outputStream.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }else{
+            json = gson.toJson(lastFilmDir);
+        }
+        Log.d("MyTag", "doInBackground: "+json);
+        Log.d("MyTag", "doInBackground: "+lastFilmDir.toString());
 
         try {
             Document doc = Jsoup.connect("http://amovies.org/serials/page/1/").get();
@@ -58,6 +72,7 @@ public class UpdateTask extends AsyncTask<Void, Void, List<SeriesItem>> {
                 seriesItem.setTranslate(link.get(0).getElementsByClass("voice").get(0).text());
                 seriesItem.setSeason(Integer.parseInt(link.get(0).getElementsByClass("season").get(0).getElementsByTag("span").get(1).text()));
                 seriesItem.setSeria(Integer.parseInt(link.get(0).getElementsByClass("series").get(0).getElementsByTag("span").get(1).text()));
+
                 films.add(seriesItem);
             }
         } catch (IOException e) {
