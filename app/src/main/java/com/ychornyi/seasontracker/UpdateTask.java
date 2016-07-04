@@ -1,8 +1,9 @@
 package com.ychornyi.seasontracker;
 
+import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
-import com.ychornyi.seasontracker.model.items.FilmItem;
 import com.ychornyi.seasontracker.model.items.SeriesItem;
 
 import org.jsoup.Jsoup;
@@ -10,6 +11,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,26 +22,21 @@ import java.util.List;
 
 public class UpdateTask extends AsyncTask<Void, Void, List<SeriesItem>> {
     private CustomCallback callback;
+    private Context context;
     private List<SeriesItem> films = new ArrayList<>();
 
     public UpdateTask(CustomCallback callback) {
         this.callback = callback;
+        this.context = (Context)callback;
     }
 
     @Override
     protected List<SeriesItem> doInBackground(Void... params) {
-//        try {
-//            Document doc = Jsoup.connect("http://amovies.org/serials/").get();
-//            Elements elements = doc.getElementsByClass("film-name");
-//            for (Element element : elements) {
-//                films.add(new FilmItem(element.text()));
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        File lastFilm = context.getFilesDir();
+        Log.d("MyTag", "doInBackground: "+lastFilm.toString());
 
         try {
-            Document doc = Jsoup.connect("http://amovies.org/serials/").get();
+            Document doc = Jsoup.connect("http://amovies.org/serials/page/1/").get();
             Elements elements = doc.getElementsByClass("short-film");
             elements.remove(0);
             elements.remove(0);
@@ -79,6 +76,6 @@ public class UpdateTask extends AsyncTask<Void, Void, List<SeriesItem>> {
     }
 
     public interface CustomCallback {
-        public void doSomething(List<SeriesItem> someResult);
+        void doSomething(List<SeriesItem> someResult);
     }
 }

@@ -1,7 +1,5 @@
 package com.ychornyi.seasontracker.model.items;
 
-import java.util.Date;
-
 public class FilmItem {
     private String title;
     private String lastUpdate;
