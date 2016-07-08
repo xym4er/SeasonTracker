@@ -56,7 +56,7 @@ public class UpdateTask extends AsyncTask<Void, Void, List<SeriesItem>> {
             }
         }
         int i = 1;
-        while (i < 3) {
+        while (i < 33) {
             Log.d("MyTag", "doInBackground: " + i);
             try {
                 Document doc = Jsoup.connect("http://amovies.org/serials/page/" + i + "/").get();
@@ -68,19 +68,7 @@ public class UpdateTask extends AsyncTask<Void, Void, List<SeriesItem>> {
                 elements.remove(0);
                 for (Element film : elements) {
                     Elements link = film.getElementsByTag("a");
-//                System.out.println(link.get(0).attr("href"));
-//                System.out.println(link.get(0).getElementsByClass("film-date-t").get(0).text());
-//                System.out.println(link.get(0).getElementsByClass("film-name").get(0).text());
-//                System.out.println(link.get(0).getElementsByClass("voice").get(0).text());
-//                System.out.println(link.get(0).getElementsByClass("season").get(0).getElementsByTag("span").get(1).text());
-//                System.out.println(link.get(0).getElementsByClass("series").get(0).getElementsByTag("span").get(1).text());
-                    SeriesItem seriesItem = new SeriesItem();
-                    seriesItem.setUrl(link.get(0).attr("href"));
-                    seriesItem.setDate(link.get(0).getElementsByClass("film-date-t").get(0).text());
-                    seriesItem.setName(link.get(0).getElementsByClass("film-name").get(0).text());
-                    seriesItem.setTranslate(link.get(0).getElementsByClass("voice").get(0).text());
-                    seriesItem.setSeason(link.get(0).getElementsByClass("season").get(0).getElementsByTag("span").get(1).text());
-                    seriesItem.setSeria(link.get(0).getElementsByClass("series").get(0).getElementsByTag("span").get(1).text());
+                    SeriesItem seriesItem = mkSeriaFromLink(link);
                     if (seriesItem.equals(lastFilm)) {
                         Log.d("MyTag", "doInBackground: false!!!  " + seriesItem.toString());
                         i = 35;
@@ -106,6 +94,91 @@ public class UpdateTask extends AsyncTask<Void, Void, List<SeriesItem>> {
             }
         }
         return films;
+    }
+
+    private String getUrl(Elements link){
+        String result;
+        if (link.isEmpty()){
+            result="";
+        }else{
+            result = link.get(0).attr("href");
+        }
+
+        return result;
+    }
+    private String getDate(Elements link){
+        if (link.isEmpty()){
+            return "";
+        }else{
+            if (link.get(0).getElementsByClass("film-date-t").isEmpty()){
+                return "";
+            }else{
+                return link.get(0).getElementsByClass("film-date-t").get(0).text();
+            }
+        }
+    }
+    private String getTranslate(Elements link){
+        if (link.isEmpty()){
+            return "";
+        }else{
+            if (link.get(0).getElementsByClass("voice").isEmpty()){
+                return "";
+            }else{
+                return link.get(0).getElementsByClass("voice").get(0).text();
+            }
+        }
+    }
+    private String getName(Elements link){
+        if (link.isEmpty()){
+            return "";
+        }else{
+            if (link.get(0).getElementsByClass("film-name").isEmpty()){
+                return "";
+            }else{
+                return link.get(0).getElementsByClass("film-name").get(0).text();
+            }
+        }
+    }
+    private String getSeason(Elements link){
+        if (link.isEmpty()){
+            return "";
+        }else{
+            if (link.get(0).getElementsByClass("season").isEmpty()){
+                return "";
+            }else{
+                if (link.get(0).getElementsByClass("season").get(0).getElementsByTag("span").isEmpty()){
+                    return "";
+                }else {
+                    return link.get(0).getElementsByClass("season").get(0).getElementsByTag("span").get(1).text();
+                }
+            }
+        }
+    }
+    private String getSeria(Elements link){
+        if (link.isEmpty()){
+            return "";
+        }else{
+            if (link.get(0).getElementsByClass("series").isEmpty()){
+                return "";
+            }else{
+                if (link.get(0).getElementsByClass("series").get(0).getElementsByTag("span").isEmpty()){
+                    return "";
+                }else {
+                    return link.get(0).getElementsByClass("series").get(0).getElementsByTag("span").get(1).text();
+                }
+            }
+        }
+    }
+
+    private SeriesItem mkSeriaFromLink(Elements link){
+        SeriesItem seriesItem = new SeriesItem();
+        seriesItem.setUrl(getUrl(link));
+        seriesItem.setDate(getDate(link));
+        seriesItem.setName(getName(link));
+        seriesItem.setTranslate(getTranslate(link));
+        seriesItem.setSeason(getSeason(link));
+        seriesItem.setSeria(getSeria(link));
+        return seriesItem;
     }
 
     @Override
