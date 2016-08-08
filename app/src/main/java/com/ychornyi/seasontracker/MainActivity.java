@@ -12,7 +12,6 @@ import android.view.MenuItem;
 
 import com.ychornyi.seasontracker.model.FilmListAdapter;
 import com.ychornyi.seasontracker.model.db.dbHelper;
-import com.ychornyi.seasontracker.model.items.FilmItem;
 import com.ychornyi.seasontracker.model.items.SeriesItem;
 
 import java.util.ArrayList;
