@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.ychornyi.seasontracker.Utils;
+import com.ychornyi.seasontracker.Utils.CryptUtils;
 import com.ychornyi.seasontracker.model.items.SeriesItem;
 
 public class dbHelper extends SQLiteOpenHelper {
@@ -53,9 +53,9 @@ public class dbHelper extends SQLiteOpenHelper {
     }
 
     public boolean mkNewTable(SeriesItem series, SQLiteDatabase db) {
-        Log.d("MyTag", "mkNewTable: "+series.getName()+" - "+Utils.encode(series.getName()));
+        Log.d("MyTag", "mkNewTable: "+series.getName()+" - "+ CryptUtils.encode(series.getName()));
 
-        db.execSQL("create table " + Utils.encode(series.getName()) + " (" +
+        db.execSQL("create table " + CryptUtils.encode(series.getName()) + " (" +
                 SERIES_COLUMN_ID + " integer primary key autoincrement, " +
                 SERIES_COLUMN_NAME + " text not null, " +
                 SERIES_COLUMN_TRANSLATE + " text, " +
@@ -64,9 +64,9 @@ public class dbHelper extends SQLiteOpenHelper {
                 SERIES_COLUMN_URL + " text, " +
                 SERIES_COLUMN_DATE + " text);");
         ContentValues cv = new ContentValues();
-        Log.d("MyTag", "mkNewTable: "+series.getName()+" - "+Utils.encode(series.getName()));
+        Log.d("MyTag", "mkNewTable: "+series.getName()+" - "+ CryptUtils.encode(series.getName()));
         cv.put(FILMS_COLUMN_NAME, series.getName());
-        cv.put(FILMS_COLUMN_TABLE_NAME, Utils.encode(series.getName()));
+        cv.put(FILMS_COLUMN_TABLE_NAME, CryptUtils.encode(series.getName()));
         cv.put(FILMS_COLUMN_PICTURE, "нету");
         cv.put(FILMS_COLUMN_LAST_UPDATE, series.getDate());
         db.insert(FILMS_TABLE_NAME, null, cv);
@@ -106,7 +106,7 @@ public class dbHelper extends SQLiteOpenHelper {
         if (!flag) {
             mkNewTable(series, db);
         }
-        db.insert(Utils.encode(series.getName()), null, mkValues(series));
+        db.insert(CryptUtils.encode(series.getName()), null, mkValues(series));
         return flag;
     }
 }

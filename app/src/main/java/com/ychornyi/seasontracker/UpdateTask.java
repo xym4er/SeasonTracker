@@ -44,7 +44,7 @@ public class UpdateTask extends AsyncTask<Void, Void, List<SeriesItem>> {
                 outputStream = new FileOutputStream(lastFilmDir);
                 outputStream.write(json.getBytes());
                 outputStream.close();
-                Log.d("MyTag", "gson to string: " + gson.fromJson(new JsonReader(new FileReader(lastFilmDir)),SeriesItem.class).toString());
+                Log.d("MyTag", "gson to string: " + gson.fromJson(new JsonReader(new FileReader(lastFilmDir)), SeriesItem.class).toString());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -75,7 +75,6 @@ public class UpdateTask extends AsyncTask<Void, Void, List<SeriesItem>> {
                         break;
                     } else {
                         films.add(seriesItem);
-
                     }
                 }
                 i++;
@@ -83,12 +82,12 @@ public class UpdateTask extends AsyncTask<Void, Void, List<SeriesItem>> {
                 e.printStackTrace();
             }
         }
-        if (!films.isEmpty()){
+        if (!films.isEmpty()) {
             try {
                 outputStream = new FileOutputStream(lastFilmDir);
                 outputStream.write(gson.toJson(films.get(0)).getBytes());
                 outputStream.close();
-                Log.d("MyTag", "gson to string: " + gson.fromJson(new JsonReader(new FileReader(lastFilmDir)),SeriesItem.class).toString());
+                Log.d("MyTag", "gson to string: " + gson.fromJson(new JsonReader(new FileReader(lastFilmDir)), SeriesItem.class).toString());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -96,81 +95,86 @@ public class UpdateTask extends AsyncTask<Void, Void, List<SeriesItem>> {
         return films;
     }
 
-    private String getUrl(Elements link){
+    private String getUrl(Elements link) {
         String result;
-        if (link.isEmpty()){
-            result="";
-        }else{
+        if (link.isEmpty()) {
+            result = "";
+        } else {
             result = link.get(0).attr("href");
         }
 
         return result;
     }
-    private String getDate(Elements link){
-        if (link.isEmpty()){
+
+    private String getDate(Elements link) {
+        if (link.isEmpty()) {
             return "";
-        }else{
-            if (link.get(0).getElementsByClass("film-date-t").isEmpty()){
+        } else {
+            if (link.get(0).getElementsByClass("film-date-t").isEmpty()) {
                 return "";
-            }else{
+            } else {
                 return link.get(0).getElementsByClass("film-date-t").get(0).text();
             }
         }
     }
-    private String getTranslate(Elements link){
-        if (link.isEmpty()){
+
+    private String getTranslate(Elements link) {
+        if (link.isEmpty()) {
             return "";
-        }else{
-            if (link.get(0).getElementsByClass("voice").isEmpty()){
+        } else {
+            if (link.get(0).getElementsByClass("voice").isEmpty()) {
                 return "";
-            }else{
+            } else {
                 return link.get(0).getElementsByClass("voice").get(0).text();
             }
         }
     }
-    private String getName(Elements link){
-        if (link.isEmpty()){
+
+    private String getName(Elements link) {
+        if (link.isEmpty()) {
             return "";
-        }else{
-            if (link.get(0).getElementsByClass("film-name").isEmpty()){
+        } else {
+            if (link.get(0).getElementsByClass("film-name").isEmpty()) {
                 return "";
-            }else{
+            } else {
                 return link.get(0).getElementsByClass("film-name").get(0).text();
             }
         }
     }
-    private String getSeason(Elements link){
-        if (link.isEmpty()){
+
+    private String getSeason(Elements link) {
+        if (link.isEmpty()) {
             return "";
-        }else{
-            if (link.get(0).getElementsByClass("season").isEmpty()){
+        } else {
+            if (link.get(0).getElementsByClass("season").isEmpty()) {
                 return "";
-            }else{
-                if (link.get(0).getElementsByClass("season").get(0).getElementsByTag("span").isEmpty()){
+            } else {
+                if (link.get(0).getElementsByClass("season").get(0).getElementsByTag("span").isEmpty()) {
                     return "";
-                }else {
+                } else {
                     return link.get(0).getElementsByClass("season").get(0).getElementsByTag("span").get(1).text();
                 }
             }
         }
     }
-    private String getSeria(Elements link){
-        if (link.isEmpty()){
+
+    private String getSeria(Elements link) {
+        if (link.isEmpty()) {
             return "";
-        }else{
-            if (link.get(0).getElementsByClass("series").isEmpty()){
+        } else {
+            if (link.get(0).getElementsByClass("series").isEmpty()) {
                 return "";
-            }else{
-                if (link.get(0).getElementsByClass("series").get(0).getElementsByTag("span").isEmpty()){
+            } else {
+                if (link.get(0).getElementsByClass("series").get(0).getElementsByTag("span").isEmpty()) {
                     return "";
-                }else {
+                } else {
                     return link.get(0).getElementsByClass("series").get(0).getElementsByTag("span").get(1).text();
                 }
             }
         }
     }
 
-    private SeriesItem mkSeriaFromLink(Elements link){
+    private SeriesItem mkSeriaFromLink(Elements link) {
         SeriesItem seriesItem = new SeriesItem();
         seriesItem.setUrl(getUrl(link));
         seriesItem.setDate(getDate(link));

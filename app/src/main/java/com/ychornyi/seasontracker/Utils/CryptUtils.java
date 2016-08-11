@@ -1,4 +1,4 @@
-package com.ychornyi.seasontracker;
+package com.ychornyi.seasontracker.Utils;
 
 import android.util.Base64;
 
@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * Created by y.chornyi on 17.06.2016.
  */
-public class Utils {
+public class CryptUtils {
     private static Map<Character, String> encryptMap = new HashMap<Character, String>() {
         {
             put('й', "01");
