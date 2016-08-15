@@ -107,6 +107,10 @@ public class dbHelper extends SQLiteOpenHelper {
             mkNewTable(series, db);
         }
         db.insert(CryptUtils.encode(series.getName()), null, mkValues(series));
+        ContentValues cv = new ContentValues();
+        cv.put(FILMS_COLUMN_LAST_UPDATE, series.getDate());
+        db.update(FILMS_TABLE_NAME, cv, FILMS_COLUMN_TABLE_NAME+" = ?",new String[] { CryptUtils.encode(series.getName()) });
+        db.close();
         return flag;
     }
 }

@@ -45,7 +45,7 @@ public class DateTimeUtils {
 
         } else {
             try {
-                out = format.parse(date);
+                out = format2.parse(date);
                 return out;
             } catch (ParseException e) {
             }

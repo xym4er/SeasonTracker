@@ -48,6 +48,22 @@ public class CryptUtils {
             put('.', "35");
             put(',', "36");
             put('!', "38");
+            put(':', "39");
+            put(';', "40");
+            put('/', "41");
+            put('-', "42");
+            put('_', "43");
+            put('0', "44");
+            put('1', "45");
+            put('2', "46");
+            put('3', "47");
+            put('4', "48");
+            put('5', "49");
+            put('6', "50");
+            put('7', "51");
+            put('8', "52");
+            put('9', "53");
+//            put('-', "54");
 
         }};
     private static Map<String, Character> decryptMap = new HashMap<String, Character>() {
@@ -90,6 +106,21 @@ public class CryptUtils {
             put("36", ',');
             put("37", '?');
             put("38", '!');
+            put("39", ':');
+            put("40", ';');
+            put("41", '/');
+            put("42", '-');
+            put("43", '_');
+            put("44", '0');
+            put("45", '1');
+            put("46", '2');
+            put("47", '3');
+            put("48", '4');
+            put("49", '5');
+            put("50", '6');
+            put("51", '7');
+            put("52", '8');
+            put("53", '9');
 
 
         }};

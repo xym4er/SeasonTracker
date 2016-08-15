@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements UpdateTask.Custom
         setSupportActionBar(toolbar);
 
         db = new dbHelper(getApplicationContext());
-
+        getDataFromDb();
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,6 +44,10 @@ public class MainActivity extends AppCompatActivity implements UpdateTask.Custom
         rv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         adapter = new FilmListAdapter(this, films);
         rv.setAdapter(adapter);
+    }
+
+    private void getDataFromDb() {
+
     }
 
 
